@@ -44,9 +44,7 @@
 
         "iso_file": "local:iso/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
         "unmount_iso": true,
-        "cloud_init": true,
-        "qemu_agent": true,
-        "boot_wait": "15m",
+        "boot_wait": "18m",
         "template_name": "template-ws22",
         "template_description": "Windows Server 22"
       }
