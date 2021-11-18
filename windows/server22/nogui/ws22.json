@@ -1,0 +1,54 @@
+{
+    "variables": {
+      "username": "",
+      "password": ""
+    },
+    "builders": [
+      {
+        "type": "proxmox",
+        "proxmox_url": "https://xxx.xxx.xxx.xxx:8006/api2/json",
+        "insecure_skip_tls_verify": true,
+        "username": "{{user `username`}}",
+        "password": "{{user `password`}}",
+  
+        "node": "promox",
+        "scsi_controller": "lsi",
+        "os": "win11",
+        "vm_name": "ws2022",
+        "memory": 8096,
+        "cores": 2,
+        "sockets":1,
+        "network_adapters": [
+          {
+            "model": "e1000",
+            "bridge": "vmbr0"
+          }
+        ],
+        "disks": [
+          {
+            "type": "sata",
+            "disk_size": "32G",
+            "storage_pool": "local-lvm",
+            "storage_pool_type": "lvm"
+          }
+        ],
+        
+        "additional_iso_files": [
+          {
+            "device": "sata5",    
+            "iso_file": "local:iso/Autounattend.iso",    
+            "unmount": true
+          }
+        ],
+        "communicator": "none",
+
+        "iso_file": "local:iso/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
+        "unmount_iso": true,
+        "cloud_init": true,
+        "qemu_agent": true,
+        "boot_wait": "15m",
+        "template_name": "template-ws22",
+        "template_description": "Windows Server 22"
+      }
+    ]
+  }
