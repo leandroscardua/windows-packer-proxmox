@@ -1,0 +1,56 @@
+{
+    "variables": {
+      "username": "",
+      "password": ""
+    },
+    "builders": [
+      {
+        "type": "proxmox",
+        "proxmox_url": "https://xxx.xxx.xxx.xxx:8006/api2/json",
+        "insecure_skip_tls_verify": true,
+        "username": "{{user `username`}}",
+        "password": "{{user `password`}}",
+  
+        "node": "",
+        "scsi_controller": "lsi",
+        "os": "win11",
+        "memory": 8096,
+        "cores": 2,
+        "sockets":1,
+        "network_adapters": [
+          {
+            "model": "e1000",
+            "bridge": "vmbr0"
+          }
+        ],
+        "disks": [
+          {
+            "type": "sata",
+            "disk_size": "32G",
+            "storage_pool": "local-lvm",
+            "storage_pool_type": "lvm"
+          }
+        ],
+        
+        "additional_iso_files": [
+          {
+            "device": "sata5",    
+            "iso_file": "local:iso/Autounattend.iso",    
+            "unmount": true
+          }
+        ],
+        "communicator": "none",
+
+        "iso_url": "https://software-download.microsoft.com/download/sg/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso",
+        "iso_storage_pool": "local-lvm",
+        "iso_checksum": "none",
+        "unmount_iso": true,
+        "boot_wait": "15m",
+        "cloud_init": true,
+        "cloud_init_storage_pool": "local-lvm",
+        "boot_command": ["<wait1m>"],
+        "template_name": "template-wscore22",
+        "template_description": "Windows Server 22"
+      }
+    ]
+  }
