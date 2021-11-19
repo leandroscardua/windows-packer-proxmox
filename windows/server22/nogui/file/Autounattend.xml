@@ -16,9 +16,71 @@
             <UILanguageFallback>en-US</UILanguageFallback>
             <UserLocale>en-US</UserLocale>
         </component>
+        <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DiskConfiguration>
+                <Disk wcm:action="add">
+                    <CreatePartitions>
+                        <CreatePartition wcm:action="add">
+                            <Type>Primary</Type>
+                            <Order>1</Order>
+                            <Size>350</Size>
+                        </CreatePartition>
+                        <CreatePartition wcm:action="add">
+                            <Order>2</Order>
+                            <Type>Primary</Type>
+                            <Extend>true</Extend>
+                        </CreatePartition>
+                    </CreatePartitions>
+                    <ModifyPartitions>
+                        <ModifyPartition wcm:action="add">
+                            <Active>true</Active>
+                            <Format>NTFS</Format>
+                            <Label>boot</Label>
+                            <Order>1</Order>
+                            <PartitionID>1</PartitionID>
+                        </ModifyPartition>
+                        <ModifyPartition wcm:action="add">
+                            <Format>NTFS</Format>
+                            <Label>OS</Label>
+                            <Letter>C</Letter>
+                            <Order>2</Order>
+                            <PartitionID>2</PartitionID>
+                        </ModifyPartition>
+                    </ModifyPartitions>
+                    <DiskID>0</DiskID>
+                    <WillWipeDisk>true</WillWipeDisk>
+                </Disk>
+            </DiskConfiguration>
+            <ImageInstall>
+                <OSImage>
+                    <InstallFrom>
+                        <MetaData wcm:action="add">
+                            <Key>/IMAGE/NAME</Key>
+                            <Value>Windows Server 2022 SERVERDATACENTERCORE</Value>
+                        </MetaData>
+                    </InstallFrom>
+                    <InstallTo>
+                        <DiskID>0</DiskID>
+                        <PartitionID>2</PartitionID>
+                    </InstallTo>
+                </OSImage>
+            </ImageInstall>
+            <UserData>
+                <ProductKey>
+                    <WillShowUI>OnError</WillShowUI>
+                </ProductKey>
+                <AcceptEula>true</AcceptEula>
+                <FullName>proxmox</FullName>
+                <Organization>Proxmox</Organization>
+            </UserData>
+        </component>
     </settings>
     <settings pass="specialize">
         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <OEMInformation>
+                <HelpCustomized>false</HelpCustomized>
+            </OEMInformation>
+            <ComputerName>ws2022</ComputerName>
             <TimeZone>Eastern Standard Time</TimeZone>
         </component>
         <component name="Microsoft-Windows-TerminalServices-LocalSessionManager" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -39,6 +101,35 @@
                 </FirewallGroup>
             </FirewallGroups>
         </component>
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <RunSynchronous>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <Path>powershell -NoLogo -Command "Invoke-WebRequest -Uri "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win-guest-tools.exe" -OutFile c:\Windows\Temp\virtio-win-guest-tools.exe"</Path>
+                    <Description>Downloading VirtIO Guest Tools</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>2</Order>
+                    <Path>powershell -NoLogo -Command "Invoke-WebRequest -Uri https://www.cloudbase.it/downloads/CloudbaseInitSetup_x64.msi -OutFile c:\Windows\Temp\CloudbaseInitSetup_x64.msi"</Path>
+                    <Description>Downloading CloudbaseInit</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Path>powershell -NoLogo -Command "Invoke-WebRequest -Uri https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win-gt-x64.msi -OutFile c:\Windows\Temp\virtio-win-gt-x64.msi"</Path>
+                    <Description>Downloading VirtioDriver</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>4</Order>
+                    <Path>powershell -NoLogo -Command "Invoke-WebRequest -Uri https://community.chocolatey.org/install.ps1 -OutFile c:\Windows\Temp\install.ps1"</Path>
+                    <Description>Installing Choco</Description>
+                </RunSynchronousCommand>
+                 <RunSynchronousCommand wcm:action="add">
+                    <Order>5</Order>
+                    <Path>powershell -NoLogo -Command "invoke-expression -Command c:\Windows\Temp\install.ps1"</Path>
+                    <Description>Installing Choco</Description>
+                </RunSynchronousCommand>
+            </RunSynchronous>
+        </component>    
         <component name="Microsoft-Windows-OutOfBoxExperience" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <DoNotOpenInitialConfigurationTasksAtLogon>true</DoNotOpenInitialConfigurationTasksAtLogon>
         </component>
@@ -57,6 +148,45 @@
                 <NetworkLocation>Work</NetworkLocation>
                 <ProtectYourPC>1</ProtectYourPC>
             </OOBE>
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>powershell -NoLogo -Command "choco install qemu-guest-agent -y"</CommandLine>
+                    <Order>1</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>powershell -NoLogo -Command "choco install cloudbaseinit -y"</CommandLine>
+                    <Order>2</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>msiexec /a C:\windows\Temp\virtio-win-gt-x64.msi /qb</CommandLine>
+                    <Order>3</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>C:\windows\system32\pnputil.exe /add-driver C:\Virtio-Win\Vioserial\*.inf /install</CommandLine>
+                    <Order>4</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>C:\windows\system32\pnputil.exe /add-driver C:\Virtio-Win\Balloon\*.inf /install</CommandLine>
+                    <Order>5</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>c:\Windows\Temp\virtio-win-guest-tools.exe /install /passive</CommandLine>
+                    <Order>6</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>powershell -NoLogo -Command "C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /unattend:E:\unattend.xml"</CommandLine>
+                    <Order>7</Order>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+            <AutoLogon>
+                <Password>
+                    <Value>1Pr@xM@x2</Value>
+                    <PlainText>true</PlainText>
+                </Password>
+                <Enabled>true</Enabled>
+                <LogonCount>1</LogonCount>
+                <Username>Administrator</Username>
+            </AutoLogon>
             <UserAccounts>
                 <AdministratorPassword>
                     <Value>1Pr@xM@x2</Value>
