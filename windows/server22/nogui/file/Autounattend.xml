@@ -55,8 +55,8 @@
                 <OSImage>
                     <InstallFrom>
                         <MetaData wcm:action="add">
-                            <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Server 2022 SERVERDATACENTERCORE</Value>
+                            <Key>/IMAGE/INDEX</Key>
+                            <Value>3</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
