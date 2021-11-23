@@ -14,7 +14,7 @@
         "node": "",
         "scsi_controller": "lsi",
         "os": "win11",
-        "memory": 8096,
+        "memory": 8192,
         "cores": 2,
         "sockets":1,
         "network_adapters": [
