@@ -49,8 +49,8 @@
         "cloud_init": true,
         "cloud_init_storage_pool": "local-lvm",
         "boot_command": ["<wait1m>"],
-        "template_name": "template-wscore22",
-        "template_description": "Windows Server 22"
+        "template_name": "template-ws22",
+        "template_description": "Windows Server 22 Desktop Experience"
       }
     ]
   }
